@@ -5,6 +5,7 @@ class Track:
         self.artist_name     = ''
         self.track_name      = ''
         self.album_name      = ''
+        self.performer       = ''
         self.isrc            = ''
         self.file_name       = ''
         self.linux_file_name = ''
@@ -24,6 +25,8 @@ class Track:
         self.artist_name = str(artist_name)
     def albumName(self,album_name):
         self.album_name = str(album_name)
+    def performerName(self,performer):
+        self.performer = str(performer)
     def fileName(self,file_name):
         self.file_name = str(file_name)
     def linuxFileName(self,file_name):
