@@ -15,7 +15,7 @@ import argparse
 from math import ceil
 
 from cdutils import Track, Disc, Album
-from byteutils import printInHexAndText, readInt, readShortText, readLongText
+from byteutils import printInHexAndText, readInt, readShortString, readLongString
 from byteutils import printInChunks, printNextBytes
 
 #------------------------------------------------------------
@@ -30,7 +30,7 @@ def readNeroFile(filename):
 
     # Nero header.  See below for encoding of "short text".
     # I have only looked at audio CD projects so far.
-    position,header = readShortText(nradata, position)
+    position,header = readShortString(nradata, position)
     if (header != 'NeroCDAV8.0.0'):
         print( 'invalid header' )
         sys.exit()
@@ -65,31 +65,31 @@ def readNeroFile(filename):
     # These are 16 bit characters.  No clue what encoding is used.
     # The format of this text seems to be 0x.. 0x00 where .. are
     # ASCII characters for all of the stuff I have tried.
-    position,title = readShortText(nradata, position)
+    position,title = readShortString(nradata, position)
     print('CD Title', title)
     album.title = title
 
-    position,artist = readShortText(nradata, position)
+    position,artist = readShortString(nradata, position)
     print('CD Artist', artist)
     album.artist = artist
 
-    position,copyright = readShortText(nradata, position)
+    position,copyright = readShortString(nradata, position)
     print('Copyright', copyright)
     album.copyright = copyright
 
-    position,author = readShortText(nradata, position)
+    position,author = readShortString(nradata, position)
     print('Author', author)
     album.author = author
 
-    position,mcn = readShortText(nradata, position)
+    position,mcn = readShortString(nradata, position)
     print('MCN', mcn)
     album.mcn = mcn
 
-    position,rdate = readShortText(nradata, position)
+    position,rdate = readShortString(nradata, position)
     print('Date', rdate)
     album.rdate = rdate
 
-    position,comment = readShortText(nradata, position)
+    position,comment = readShortString(nradata, position)
     print('Comment', comment)
     album.comment = comment
 
@@ -243,33 +243,33 @@ def readNeroFile(filename):
         #  16 bit chars (as in the CD section) and a 16 bit null trailer.
 
         # Full file name.
-        position, full_file_name = readLongText(nradata,position)
+        position, full_file_name = readLongString(nradata,position)
         print('Full file name "',full_file_name,'"',sep='')
 
         # Empty string.
-        position, empty_string = readLongText(nradata,position)
+        position, empty_string = readLongString(nradata,position)
         print('Empty string "', empty_string, '"', sep='')
 
         # File name.
-        position, file_name = readLongText(nradata,position)
+        position, file_name = readLongString(nradata,position)
         print('File name "', file_name, '"', sep='')
 
         # Artist
-        position, artist = readLongText(nradata,position)
+        position, artist = readLongString(nradata,position)
         print('Artist "', artist, '"', sep='')
         track.artistName(artist)
 
         # Track title
-        position, track_title = readLongText(nradata,position)
+        position, track_title = readLongString(nradata,position)
         print('Track title "', track_title, '"', sep='')
         track.trackName(track_title)
 
         # Empty string.
-        position, empty_string = readLongText(nradata,position)
+        position, empty_string = readLongString(nradata,position)
         print('Empty string "', empty_string, '"', sep='')
 
         # ISRC
-        position, isrc = readLongText(nradata,position)
+        position, isrc = readLongString(nradata,position)
         print('ISRC "', isrc, '"', sep='')
         track.ISRC(isrc)
 
@@ -328,7 +328,7 @@ def readNeroFile(filename):
         printInHexAndText(nradata[position:nextpos])
         position = nextpos
 
-        position, full_file_name_again = readLongText(nradata,position)
+        position, full_file_name_again = readLongString(nradata,position)
         print('Full file name (again) "', full_file_name_again, '"', sep='')
 
         nextpos = position+4

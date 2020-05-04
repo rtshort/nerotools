@@ -1,4 +1,6 @@
+"""A collection of classes to represent audio CDs.
 
+"""
 
 class Track:
     def __init__(self):
